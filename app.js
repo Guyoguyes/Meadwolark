@@ -1,9 +1,12 @@
 var express = require('express');
+var chalk = require('chalk');
+
 
 var app = express();
 var port = 3000;
 
 var fortune = require('./lib/fortune')
+
 
 
 //set up handlebars view engine
@@ -12,7 +15,9 @@ var handlebars = require('express3-handlebars')
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars')
 
-
+app.use(function(req, res, next){
+    res.locals.showTest = app.get('env') !== 'production' && req.query.test === '1';
+})
 
 app.get('/', function(req, res){
     // res.type('text/plain');
@@ -47,7 +52,7 @@ app.use(function(err, req, res, next){
 
 // Server Listening
 app.listen(port, () =>{
-    console.log('------Server Started--------');
+    console.log(chalk.blue('------Server Started--------'));
     console.log('Server running at localhost: '+port);
-    console.log('Press Ctrl-c to terminate server')
+    console.log(chalk.yellow('-----Made with LOVE by Guyo------'))
 })
